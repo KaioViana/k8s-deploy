@@ -62,6 +62,8 @@ USER node
 # ===========
 FROM node:lts-buster-slim as production
 
+ARG PORT=3333
+
 WORKDIR /usr/src/app
 
 ENV NODE_ENV production
@@ -72,5 +74,9 @@ COPY --from=stage /usr/src/app/dist ./dist
 RUN yarn install --production --frozen-lockfile
 
 USER node
+
+EXPOSE ${PORT}
+
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD curl --fail http://localhost:$PORT || exit 1
 
 CMD ["yarn", "start:prod"]
