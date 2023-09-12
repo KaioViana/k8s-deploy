@@ -1,0 +1,116 @@
+version: '3.4'
+
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: ./docker/Dockerfile
+      target: production
+    volumes:
+      - './:/usr/app'
+    env_file:
+      - ./.env
+    ports:
+      - '3333:3333'
+    expose:
+      - '3333'
+    restart: 'unless-stopped'
+    depends_on:
+      - product_adm_db
+      - client_adm_db
+      - checkout_db
+      - store_catalog_db
+      - invoice_db
+      - payments_db
+
+  product_adm_db:
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: product_adm
+      MYSQL_USER: 'admin'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - product_adm_database:/var/lib/mysql
+
+  client_adm_db:
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: client_adm
+      MYSQL_USER: 'admin'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - '3307:3306'
+    expose:
+      - '3307'
+    volumes:
+      - client_adm_database:/var/lib/mysql
+
+  checkout_db:
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: checkout
+      MYSQL_USER: 'admin'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - '3308:3306'
+    expose:
+      - '3308'
+    volumes:
+      - checkout_database:/var/lib/mysql
+
+  store_catalog_db:
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: store_catalog
+      MYSQL_USER: 'admin'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - '3309:3306'
+    expose:
+      - '3309'
+    volumes:
+      - store_catalog_database:/var/lib/mysql
+
+  invoice_db:
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: invoice
+      MYSQL_USER: 'admin'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - '3310:3306'
+    expose:
+      - '3310'
+    volumes:
+      - invoice_database:/var/lib/mysql
+
+  payments_db:
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: payment
+      MYSQL_USER: 'admin'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - '3311:3306'
+    expose:
+      - '3311'
+    volumes:
+      - payment_database:/var/lib/mysql
+
+volumes:
+  product_adm_database:
+  client_adm_database:
+  checkout_database:
+  store_catalog_database:
+  invoice_database:
+  payment_database:
