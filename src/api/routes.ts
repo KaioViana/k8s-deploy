@@ -12,6 +12,7 @@ const {
   InvoiceController,
 } = controllers;
 
+routes.get('/', async (_, res) => res.status(200).send('<h1>K8s-deploy<h1/>'));
 routes.post('/products', async (req, res) => ProductsController.createProduct(req, res));
 routes.post('/clients', async (req, res) => ClientsController.createClient(req, res));
 routes.post('/checkout', async (req, res) => CheckoutController.placeOrder(req, res));
